@@ -192,6 +192,11 @@ class ConfigProcessor:
                 rest = line[3:].strip()  # -> "foo = bar"
                 key, val = rest.split('=', 1)
                 self.SAVE_CONFIG_data[current_section][key.strip()] = val.strip()
+            elif current_section and line.startswith("#*#") and ':' in line:
+                # Some SAVE_CONFIG blocks use ':' as the delimiter.
+                rest = line[3:].strip()
+                key, val = rest.split(':', 1)
+                self.SAVE_CONFIG_data[current_section][key.strip()] = val.strip()
 
     def _process_config_data(self, data):
         lines = data.split('\n')
@@ -203,17 +208,58 @@ class ConfigProcessor:
         current_section = None
         for i, raw_line in enumerate(lines[:SAVE_CONFIG_start_index]):
             line = raw_line.strip()
+            if not line or line.startswith('#') or line.startswith(';'):
+                # Never touch comments or already-commented lines. This also
+                # prevents a previously-commented SAVE_CONFIG-related line from
+                # being commented again on regeneration.
+                continue
             if line.startswith('[') and line.endswith(']'):
-                current_section = line.strip('[]')
+                current_section = line.strip('[]').strip()
             elif current_section and '=' in line:
                 key, val = [p.strip() for p in line.split('=', 1)]
                 saved_val = self.SAVE_CONFIG_data.get(current_section, {}).get(key)
-                if saved_val is not None and saved_val != val:
-                    # Comment out any line whose value no longer matches the saved one
-                    lines[i] = "# " + line
+                if saved_val is not None and not self._values_match(saved_val, val):
+                    # Comment out only the line whose value no longer matches the
+                    # saved one, preserving the original indentation.
+                    lines[i] = self._comment_line(raw_line)
+            elif current_section and ':' in line:
+                # Klipper accepts ':' as a delimiter too; handle both so z_offset
+                # and other saved keys are compared regardless of syntax.
+                key, val = [p.strip() for p in line.split(':', 1)]
+                saved_val = self.SAVE_CONFIG_data.get(current_section, {}).get(key)
+                if saved_val is not None and not self._values_match(saved_val, val):
+                    lines[i] = self._comment_line(raw_line)
 
         # Reassemble everything, including the SAVE_CONFIG block unchanged
         return '\n'.join(lines)
+
+    @staticmethod
+    def _comment_line(raw_line):
+        """Comment out a config line while preserving its leading whitespace."""
+        leading = raw_line[:len(raw_line) - len(raw_line.lstrip())]
+        return f"{leading}# {raw_line.lstrip()}"
+
+    @staticmethod
+    def _values_match(saved_val, current_val):
+        """
+        Compare a saved SAVE_CONFIG value with a value in the main config.
+        Klipper normalises numbers, so 0.0 vs 0.000 and 1 vs 1.0 must be treated
+        as equal. Otherwise a valid SAVE_CONFIG entry (e.g. a probe z_offset,
+        issue #428) would be incorrectly commented out and appear to reset after
+        a reboot.
+        """
+        saved_val = saved_val.strip()
+        current_val = current_val.strip()
+        if saved_val == current_val:
+            return True
+        try:
+            return float(saved_val) == float(current_val)
+        except (ValueError, TypeError):
+            # Non-numeric (e.g. pin names): compare case-sensitively but ignore
+            # surrounding whitespace and a leading '!' polarity or '^' pullup.
+            def norm(v):
+                return v.lstrip('!^').strip()
+            return norm(saved_val) == norm(current_val)
 
     def process_config_file(self, filename):
         data = self._read_config_file(filename)

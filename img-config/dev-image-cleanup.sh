@@ -88,7 +88,7 @@ checkout_main_and_pull_latest() {
 }
 
 checkout_main_and_pull_latest "$USER_HOME/display_connector"
-checkout_main_and_pull_latest "$USER_HOME/OpenNept4une"
+checkout_main_and_pull_latest "$USER_HOME/Neo9labs"
 
 # -----------------------------
 # 2) Personalised files cleanup
@@ -99,12 +99,12 @@ rm -f "$USER_HOME/printer_data/configs/printer.cfg" || true
 : > "$USER_HOME/printer_data/config/user_settings.cfg"
 
 
-# Remove N4* model line from OpenNept4une file (txt or cfg), keep backup
-for OPENNEP_FILE in /boot/.OpenNept4une.txt /boot/.OpenNept4une.cfg; do
-  if $SUDO test -f "$OPENNEP_FILE"; then
-    echo "-- Sanitizing $OPENNEP_FILE (removing N4* model line) --"
-    $SUDO cp -a "$OPENNEP_FILE" "${OPENNEP_FILE}.bak"
-    $SUDO sed -i '/^N4.*/d' "$OPENNEP_FILE"
+# Remove N4* model line from Neo9labs file (txt or cfg), keep backup
+for NEO9LABS_FILE in /boot/.Neo9labs.txt /boot/.Neo9labs.cfg; do
+  if $SUDO test -f "$NEO9LABS_FILE"; then
+    echo "-- Sanitizing $NEO9LABS_FILE (removing N4* model line) --"
+    $SUDO cp -a "$NEO9LABS_FILE" "${NEO9LABS_FILE}.bak"
+    $SUDO sed -i '/^N4.*/d' "$NEO9LABS_FILE"
   fi
 done
 

@@ -1,7 +1,7 @@
 <p align="center">
-  <img src="pictures/OpenNept4une.png" width="350" alt="OpenNept4une Logo">
-  <h1 align="center">OpenNept4une</h1>
-  <h1 align="center">De-Elegoo-izing the Neptune 4 Series 3D Printers</h1>
+  <img src="pictures/Neo9labs.png" width="350" alt="Neo9labs Logo">
+  <h1 align="center">Neo9labs</h1>
+  <h1 align="center">De-Elegoo-izing the Neo9labs Series 3D Printers</h1>
 </p>
 
 ---
@@ -10,7 +10,7 @@
 
 | 📥 Download | ⚙️ Installation | 💬 Discord Server |
 |---------------------------------------------|---------------------------------------------|--------------------------------------------|
-| [Releases](https://github.com/OpenNeptune3D/OpenNept4une/releases/) | [Wiki](https://github.com/OpenNeptune3D/OpenNept4une/wiki) | [Discord](https://discord.gg/zX35xfvA2W) |
+| [Releases](https://github.com/neo9labs/Neo9labes/releases/) | [Wiki](https://github.com/neo9labs/Neo9labes/wiki) | [Discord](https://discord.gg/zX35xfvA2W) |
 
 </div>
 
@@ -21,19 +21,19 @@
   
 ### Credits: (Community Members)  
 Phillip Thelen, barrenechea, SQUIRRELYMOOSE, DanDonut & Jaerax  
-And our GitHub [Contributors](https://github.com/OpenNeptune3D/OpenNept4une/graphs/contributors)
+And our GitHub [Contributors](https://github.com/neo9labs/Neo9labes/graphs/contributors)
 
 
 </div>
 
 **NOTE:** While the latest release file may appear outdated, this project is actively maintained and updated regularly. The main Linux image within the release includes a built-in updater that continuously pulls the latest changes directly from the project’s various GitHub repositories. This ensures that you always have the most recent updates, even if the release file itself hasn’t been changed in a while. Check the commit history for the latest improvements and fixes:
 
-- [OpenNeptune3D/OpenNept4une commits](https://github.com/OpenNeptune3D/OpenNept4une/commits/dev)
-- [OpenNeptune3D/display_connector commits](https://github.com/OpenNeptune3D/display_connector/commits/dev)
+- [neo9labs/Neo9labes commits](https://github.com/neo9labs/Neo9labes/commits/main)
+- [neo9labs/display_connector commits](https://github.com/neo9labs/display_connector/commits/main)
 
 ---
 ### Image Features
-- Support for all Neptune 4 series models 
+- Support for all Neo9labs series models
 - Custom Armbian Image (25.11 trixie with Linux kernel 6.16.12) ([Credit](https://github.com/redrathnure/armbian-mkspi.git)) ([Credit](https://github.com/halfmanbear/Armbian-ZNP-K1-build))
 - Klipper v0.13 installed + Easy MCU flash 
 - Updatable services, packages & firmware (No need for Elegoo Firmware Updates going forward)
@@ -53,8 +53,8 @@ And our GitHub [Contributors](https://github.com/OpenNeptune3D/OpenNept4une/grap
 ---
 
 <div style="text-align: center;">
-  <img src="pictures/main-page.png" width="450" alt="OpenNept4une Main-Page" style="margin-right: 10px;">
-  <img src="pictures/advanced-page.png" width="450" alt="OpenNept4une Advanced-Page">
+  <img src="pictures/main-page.png" width="450" alt="Neo9labs Main-Page" style="margin-right: 10px;">
+  <img src="pictures/advanced-page.png" width="450" alt="Neo9labs Advanced-Page">
 </div>
 
 ---
@@ -62,8 +62,8 @@ And our GitHub [Contributors](https://github.com/OpenNeptune3D/OpenNept4une/grap
 ### Included Projects: 
   - [armbian](https://github.com/armbian/build)
   - [(Fork) armbian-mkspi](https://github.com/redrathnure/armbian-mkspi.git)
-  - [(Fork) Armbian-ZNP-K1-build base image](https://github.com/OpenNeptune3D/Armbian-ZNP-K1-build)
-  - [display_connector](https://github.com/OpenNeptune3D/display_connector)
+  - [(Fork) Armbian-ZNP-K1-build base image](https://github.com/neo9labs/Armbian-ZNP-K1-build)
+  - [display_connector](https://github.com/neo9labs/display_connector)
   - [KAMP (Klipper-Adaptive-Meshing-Purging)](https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging)
   - [kiauh (Klipper Installation And Update Helper)](https://github.com/dw-0/kiauh)
   - [Klipper](https://github.com/Klipper3d/klipper)

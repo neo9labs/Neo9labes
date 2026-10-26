@@ -1,4 +1,4 @@
-# How to Dump/Flash Neptune 4 MCU Firmware (Alternative Method)
+# How to Dump/Flash Neo9labs MCU Firmware (Alternative Method)
 
 **Warning:** This guide is specifically for ZNP-K1 V1.0 Boards. It may be similar for V1.1 boards without WiFi, but you will need to manually verify continuity and pinout to pads. Do **not** attempt to flash this firmware on a stock Elegoo setup; it is intended only for DE-ELEGOO images.
 
@@ -21,9 +21,9 @@
    _This script prepares the MCU board to boot in normal mode for regular operation. Post-reboot, the board will establish communication with Klipper._
 
 3. **Update the MCU Firmware:**
-   Execute the `OpenNept4une.sh` script to update your firmware:
+   Execute the `Neo9labs.sh` script to update your firmware:
    ```
-   ./OpenNept4une.sh
+   ./Neo9labs.sh
    ```
    _The script will automatically detect the board version and apply the appropriate flashing procedure._
 

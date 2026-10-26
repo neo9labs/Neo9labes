@@ -6,8 +6,17 @@
 set -euo pipefail
 
 # ===== Config (override via env) =====
-USER_NAME="${USER_NAME:-mks}"
-MOUNT_POINT="${MOUNT_POINT:-/home/mks/printer_data/gcodes/USB}"
+# Resolve the real invoking user dynamically instead of hardcoding 'mks'.
+if [[ -z "${USER_NAME:-}" ]]; then
+  if [[ ${SUDO_USER:-} && "${SUDO_USER}" != "root" ]]; then
+    USER_NAME="${SUDO_USER}"
+  else
+    USER_NAME="$(id -un)"
+  fi
+fi
+USER_HOME="$(getent passwd "$USER_NAME" | cut -d: -f6 || true)"
+[[ -n "$USER_HOME" ]] || USER_HOME="/home/${USER_NAME}"
+MOUNT_POINT="${MOUNT_POINT:-${USER_HOME}/printer_data/gcodes/USB}"
 RULE_PATH="${RULE_PATH:-/etc/udev/rules.d/99-usb_automount.rules}"
 EXTRA_OPTS="${EXTRA_OPTS:-}"                      # Only for FAT-like (e.g., "flush,async")
 IDLE_TIMEOUT_SEC="${IDLE_TIMEOUT_SEC:-0}"         # 0 = disabled

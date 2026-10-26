@@ -1,7 +1,7 @@
 sudo groupadd spiusers
 sudo usermod -a -G spiusers mks
 
-sudo cp ~/OpenNept4une/img-config/spidev-fix/99-spidev.rules /etc/udev/rules.d/
+sudo cp ~/Neo9labs/img-config/spidev-fix/99-spidev.rules /etc/udev/rules.d/
 
-sudo cp ~/OpenNept4une/img-config/spidev-fix/{rockchip-fixup.scr,rockchip-spi-spidev.dtbo} /boot/dtb/rockchip/overlay/
+sudo cp ~/Neo9labs/img-config/spidev-fix/{rockchip-fixup.scr,rockchip-spi-spidev.dtbo} /boot/dtb/rockchip/overlay/
 

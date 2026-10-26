@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Debug script for OpenNept4une/Klipper setup on Armbian SBC
+# Debug script for Neo9labs/Klipper setup on Armbian SBC
 # Collects git repo info, MCU versions (via Moonraker API), config files, and logs for GitHub issues
 
 # Exit on critical errors only - we handle most errors gracefully
@@ -192,10 +192,10 @@ collect_git_info() {
     } >> "$GIT_INFO_FILE"
 }
 
-# Find OpenNept4une directory (handles case variations)
-find_opennept4une_dir() {
+# Find Neo9labs directory (handles case variations)
+find_neo9labs_dir() {
     local candidates=(
-        "$HOME/OpenNept4une"
+        "$HOME/Neo9labs"
     )
     
     for dir in "${candidates[@]}"; do
@@ -370,7 +370,7 @@ collect_system_info() {
         echo "=== System Info ==="
         uname -a 2>/dev/null || echo "uname not available"
         echo ""
-	cat /boot/.OpenNept4une.txt 2>/dev/null || echo "file not available"
+	cat /boot/.Neo9labs.txt 2>/dev/null || echo "file not available"
 	echo ""
 
         echo "=== OS Release ==="
@@ -546,7 +546,7 @@ create_archive() {
 # =============================================================================
 
 main() {
-    log_info "OpenNept4une Debug Collection Script"
+    log_info "Neo9labs Debug Collection Script"
     log_info "====================================="
 
     # Check dependencies
@@ -563,13 +563,13 @@ main() {
     log_info "Collecting git repository information..."
     touch "$GIT_INFO_FILE"
     
-    # Find OpenNept4une directory (handles case variations)
-    local opennept_dir
-    opennept_dir=$(find_opennept4une_dir)
-    if [[ -n "$opennept_dir" ]]; then
-        collect_git_info "$opennept_dir"
+    # Find Neo9labs directory (handles case variations)
+    local neo9labs_dir
+    neo9labs_dir=$(find_neo9labs_dir)
+    if [[ -n "$neo9labs_dir" ]]; then
+        collect_git_info "$neo9labs_dir"
     else
-        echo "=== OpenNept4une === (Directory not found)" >> "$GIT_INFO_FILE"
+        echo "=== Neo9labs === (Directory not found)" >> "$GIT_INFO_FILE"
         echo "" >> "$GIT_INFO_FILE"
     fi
     

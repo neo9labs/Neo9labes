@@ -17,13 +17,13 @@ fi
 TARGET_USER="${TARGET_USER:-${SUDO_USER}}"
 KAMP_REPO="${KAMP_REPO:-https://github.com/kyleisah/Klipper-Adaptive-Meshing-Purging.git}"
 KIAUH_REPO="${KIAUH_REPO:-https://github.com/dw-0/kiauh.git}"
-FLUIDD_DB_URL="${FLUIDD_DB_URL:-https://raw.githubusercontent.com/OpenNeptune3D/OpenNept4une/main/img-config/printer-data/data.mdb}"
+FLUIDD_DB_URL="${FLUIDD_DB_URL:-https://raw.githubusercontent.com/neo9labs/Neo9labes/main/img-config/printer-data/data.mdb}"
 ARM_ENV_PATH="${ARM_ENV_PATH:-/boot/armbianEnv.txt}"
 RUN_KIAUH="${RUN_KIAUH:-1}"
 NETPLAN_FILE="${NETPLAN_FILE:-/etc/netplan/10-dhcp-all-interfaces.yaml}"
 
 # If your repo with spidev fixes is elsewhere, set SPIDEV_SRC_DIR before running:
-SPIDEV_SRC_DIR="${SPIDEV_SRC_DIR:-/home/${SUDO_USER}/OpenNept4une/img-config/spidev-fix}"
+SPIDEV_SRC_DIR="${SPIDEV_SRC_DIR:-/home/${SUDO_USER}/Neo9labs/img-config/spidev-fix}"
 
 # ===== Helpers =====
 die() { echo "Error: $*" >&2; exit 1; }

@@ -3,7 +3,7 @@
 # Paths
 KLIPPER_DIR="${HOME}/klipper"
 FIRMWARE_DIR="${HOME}/printer_data/config/Firmware"
-MCU_SWFLASH_ALT="${HOME}/OpenNept4une/mcu-firmware/alt-method/mcu-swflash-run.sh"
+MCU_SWFLASH_ALT="${HOME}/Neo9labs/mcu-firmware/alt-method/mcu-swflash-run.sh"
 
 # Helper to apply a minimal config and expand it
 apply_minimal_config() {
@@ -12,6 +12,25 @@ apply_minimal_config() {
     make clean
     cp "$config_file" .config
     make olddefconfig
+}
+
+# Warn when the running host Klipper and the flashed MCU firmware are likely out
+# of sync. A version mismatch is the cause of the
+# "MCU is missing feature 'STEPPER_STEP_BOTH_EDGE'" deprecated-code warning
+# (issue #410) and can cause subtle timing/motion problems.
+warn_mcu_version_mismatch() {
+    local host_ver
+    host_ver="$(git -C "$KLIPPER_DIR" describe --tags --always 2>/dev/null || true)"
+    echo "Host Klipper version: ${host_ver:-unknown}"
+    echo "NOTE: Recompile AND reflash the MCU in the same session so the host and"
+    echo "      MCU firmware versions match. A mismatch triggers the"
+    echo "      'STEPPER_STEP_BOTH_EDGE' deprecated-code warning (issue #410)."
+    if command -v curl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+        local mcu_ver
+        mcu_ver="$(curl -sf --connect-timeout 3 http://127.0.0.1:7125/printer/info 2>/dev/null \
+                   | jq -r '.result.mcu_version // empty' 2>/dev/null || true)"
+        [[ -n "$mcu_ver" ]] && echo "Flashed MCU version:  $mcu_ver"
+    fi
 }
 
 # Get current git branch from $KLIPPER_DIR
@@ -70,8 +89,9 @@ fi
 if [[ "$mcu_choice" == "STM32" || "$mcu_choice" == "All" ]]; then
     clear
     echo "Proceeding with STM32 MCU Update..."
+    warn_mcu_version_mismatch
 
-    apply_minimal_config "${HOME}/OpenNept4une/mcu-firmware/mcu.config"
+    apply_minimal_config "${HOME}/Neo9labs/mcu-firmware/mcu.config"
     make
 
     if grep -q "/usr/local/bin/gpio_set.sh" "/etc/rc.local" 2>/dev/null; then
@@ -101,7 +121,7 @@ if [[ "$mcu_choice" == "STM32" || "$mcu_choice" == "All" ]]; then
         echo "3. Check Fluidd for version confirmation."
         echo ""
         echo -e "For internal MCUs, see the wiki:"
-        echo "https://github.com/OpenNeptune3D/OpenNept4une/wiki"
+        echo "https://github.com/neo9labs/Neo9labes/wiki"
         echo ""
 
         echo -e "\nHave you downloaded the bin files and are ready to continue? (y)"
@@ -150,7 +170,7 @@ if [[ "$mcu_choice" == "Pico-based USB Accelerometer" || "$mcu_choice" == "All" 
         echo "Installing numpy in Klipper environment..."
         ~/klippy-env/bin/pip install numpy
 
-        apply_minimal_config "${HOME}/OpenNept4une/mcu-firmware/pico_usb.config"
+        apply_minimal_config "${HOME}/Neo9labs/mcu-firmware/pico_usb.config"
         make
         make flash FLASH_DEVICE=2e8a:0003
 
@@ -186,17 +206,17 @@ if [[ "$mcu_choice" == "Virtual RPi" || "$mcu_choice" == "All" ]]; then
     echo "Stopping klipper service..."
     sudo service klipper stop || true
 
-    if [[ -f /boot/.OpenNept4une.txt ]]; then
-        if grep -iq "mks" /boot/.OpenNept4une.txt; then
+    if [[ -f /boot/.Neo9labs.txt ]]; then
+        if grep -iq "mks" /boot/.Neo9labs.txt; then
             echo "Skipping kernel patch for MKS systems..."
-        elif grep -Eqi "dec 11|oct 12" /boot/.OpenNept4une.txt; then 
+        elif grep -Eqi "dec 11|oct 12" /boot/.Neo9labs.txt; then
             echo "Applying kernel patch..."
             echo "kernel.sched_rt_runtime_us = -1" | sudo tee -a /etc/sysctl.d/10-disable-rt-group-limit.conf
         fi
     fi
 
     echo "Applying Virtual MCU configuration..."
-    apply_minimal_config "${HOME}/OpenNept4une/mcu-firmware/virtualmcu.config"
+    apply_minimal_config "${HOME}/Neo9labs/mcu-firmware/virtualmcu.config"
     
     echo "Flashing Virtual MCU..."
     make flash || { echo "Failed to flash Virtual MCU"; exit 1; }
